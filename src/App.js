@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     async function loadMessages() {
-      let socket = new WebSocket("ws://pure-bastion-70060.herokuapp.com/");
+      let socket = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
 
       socket.onopen = function (e) {
         alert("[open] Connection established");
