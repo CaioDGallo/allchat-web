@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import api from './services/api';
+
+import './global.css';
 import './App.css';
+import './Main.css';
+
+import ChatForm from './components/ChatForm';
 
 function App() {
+  const [devs, setDevs] = useState([]);
+
+  useEffect(() => {
+    async function loadDevs() {
+      //const response = await api.get('/devs');
+
+      //setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
+
+  async function handleAddDev(data) {
+    const response = await api.post('/devs', data)
+
+    setDevs([...devs, response.data]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="app">
+      <main>
+      <strong>Chat</strong>
+        <ChatForm onSubmit={handleAddDev} />
+      </main>
     </div>
   );
 }
