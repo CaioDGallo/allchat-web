@@ -8,44 +8,53 @@ import './Main.css';
 import ChatForm from './components/ChatForm';
 
 function App() {
-  const [messages, setMessages] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [webSocket, setWebSocket] = useState(null);
 
   useEffect(() => {
-    async function loadMessages() {
-      let socket = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
-
-      socket.onopen = function (e) {
-        alert("[open] Connection established");
-        alert("Sending to server");
-        socket.send("My name is John");
-      };
-
-      socket.onmessage = function (event) {
-        setMessages(`Message received from server: ${event.data}`)
-      };
-
-      socket.onclose = function (event) {
-        if (event.wasClean) {
-          alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-        } else {
-          // e.g. server process killed or network down
-          // event.code is usually 1006 in this case
-          alert('[close] Connection died');
-        }
-      };
-
-      socket.onerror = function (error) {
-        alert(`[error] ${error.message}`);
-      };
-    }
-
-    loadMessages();
+    setupWebSocket()
   }, []);
 
-  async function handleSendMessage(data) {
-    const response = await api.post('/devs', data)
+  async function setupWebSocket() {
+    let socket = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
+    setWebSocket(socket)
 
-    setMessages(response.data);
+    socket.onopen = function (e) {
+      socket.send("Connection established");
+    };
+
+    socket.onmessage = function (event) {
+      var data = {
+        message: `Message received from server: ${event.data}`
+      }
+      handleReceiveMessage(data)
+    };
+
+    socket.onclose = function (event) {
+      if (event.wasClean) {
+        alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+      } else {
+        // e.g. server process killed or network down
+        // event.code is usually 1006 in this case
+        alert('[close] Connection died');
+      }
+    };
+
+    socket.onerror = function (error) {
+      alert(`[error] ${error.message}`);
+    };
+  }
+  
+  function handleSendMessage(data) {
+    console.log("handleSendMessage " + data.message)
+    webSocket.send(data.message)
+    setMessages([...messages, data])
+    console.log([...messages, data])
+  }
+
+   function handleReceiveMessage(data) {
+    setMessages([...messages, data])
+    console.log([...messages, data])  
   }
 
   return (
@@ -53,7 +62,12 @@ function App() {
       <main>
         <strong>Chat</strong>
         <ChatForm onSubmit={handleSendMessage} />
-        <p>{messages}</p>
+        <ul>
+          {messages.map(message => (
+            //FIX THIS, A UNIQUE KEY IS A MUST
+            <p key={message.message}>{message.message}</p>
+          ))}
+        </ul>
       </main>
     </div>
   );
