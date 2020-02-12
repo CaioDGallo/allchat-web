@@ -1,36 +1,32 @@
 import React, { useState } from 'react';
 
-function ChatForm({ websocket, messages, setMessages }) {
-  const [chatMessages, setChatMessages] = useState(messages);
-  const [messageInputValue, setMessageInputValue] = useState('');
+import './styles.css';
+import ChatMessages from '../ChatMessages';
 
-  console.log(messages)
+function ChatForm({ websocket, messages, setMessages }) {
+  const [messageInputValue, setMessageInputValue] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    let msg = {
-      message: e.target.messageInputValue.value,
-    }
+    var messageObject = {
+      'message': e.target.messageInputValue.value,
+      'id': Math.random(),
+      'user': 'Usuário teste',
+  }
 
-    websocket.send(msg.message)
+    websocket.send(JSON.stringify(messageObject))
     
     setMessageInputValue('')
-
-    setMessages(msg)
+    setMessages(messageObject)
   }
 
   return (
-    <div>
-      {/* //Separate this into its own component */}
-      <ul>
-          {messages.map(message => (
-            //FIX THIS, A UNIQUE KEY IS A MUST
-            <p key={Math.random()*10}>{message.message}</p>
-          ))}
-        </ul>
-        {/* // -- */}
-      <form onSubmit={handleSubmit}>
+    <div id='chat'>
+
+      <ChatMessages messages={messages} />
+
+      <form onSubmit={handleSubmit} id='chat-form'>
         <div className="input-block">
           <label htmlFor="messageInputValue">Message</label>
           <input

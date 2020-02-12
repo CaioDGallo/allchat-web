@@ -26,7 +26,8 @@ class WebSocketComponent extends Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
-        var ws = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
+        //var ws = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
+        var ws = new WebSocket("ws://localhost:3000");
         let that = this; // cache the this
         var connectInterval;
 
@@ -34,7 +35,13 @@ class WebSocketComponent extends Component {
         ws.onopen = () => {
             console.log("connected websocket main component");
 
-            ws.send("Connection established");
+            var messageObject = JSON.stringify({
+                'message': 'User has joined chat ...',
+                'id': Math.random(),
+                'user': 'Usuário teste',
+            })
+
+            ws.send(messageObject);
 
             this.setState({ 
                 ws: ws,
@@ -60,12 +67,11 @@ class WebSocketComponent extends Component {
         };
 
         ws.onmessage = function (event) {
-            var data = {
-                message: `Message received from server: ${event.data}`
-            }
+            console.log('onmsg' + event.data)
+
             that.setState(state => ({ 
                 ws: ws,
-                messages: [...state.messages, data] 
+                messages: [...state.messages, JSON.parse(event.data)] 
             }))
         };
 
