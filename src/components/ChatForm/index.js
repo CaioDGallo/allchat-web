@@ -1,33 +1,49 @@
 import React, { useState } from 'react';
 
-function ChatForm({ onSubmit }) {
-  const [message, setMessage] = useState('');
+function ChatForm({ websocket, messages, setMessages }) {
+  const [chatMessages, setChatMessages] = useState(messages);
+  const [messageInputValue, setMessageInputValue] = useState('');
+
+  console.log(messages)
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    await onSubmit({
-      message,
-    });
+    let msg = e.target.messageInputValue.value
+    websocket.send(msg)
+    
+    setMessageInputValue('')
 
-    setMessage('');
+    setMessages({
+      message: msg,
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="input-block">
-        <label htmlFor="message">Message</label>
-        <input 
-          name="message" 
-          id="message" 
-          required
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-        />
-      </div>
+    <div>
+      {/* //Separate this into its own component */}
+      <ul>
+          {messages.map(message => (
+            //FIX THIS, A UNIQUE KEY IS A MUST
+            <p key={Math.random()*10}>{message.message}</p>
+          ))}
+        </ul>
+        {/* // -- */}
+      <form onSubmit={handleSubmit}>
+        <div className="input-block">
+          <label htmlFor="messageInputValue">Message</label>
+          <input
+            name="messageInputValue"
+            id="messageInputValue"
+            required
+            value={messageInputValue}
+            onChange={e => setMessageInputValue(e.target.value)}
+            />
+        </div>
 
-      <button type="submit">Salvar</button>
-    </form>
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
   );
 }
 
