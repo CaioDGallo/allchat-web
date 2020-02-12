@@ -26,8 +26,8 @@ class WebSocketComponent extends Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
-        //var ws = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
-        var ws = new WebSocket("ws://localhost:3000");
+        var ws = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
+        //var ws = new WebSocket("ws://localhost:3000");
         let that = this; // cache the this
         var connectInterval;
 
