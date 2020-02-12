@@ -9,14 +9,15 @@ function ChatForm({ websocket, messages, setMessages }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    let msg = e.target.messageInputValue.value
-    websocket.send(msg)
+    let msg = {
+      message: e.target.messageInputValue.value,
+    }
+
+    websocket.send(msg.message)
     
     setMessageInputValue('')
 
-    setMessages({
-      message: msg,
-    })
+    setMessages(msg)
   }
 
   return (
