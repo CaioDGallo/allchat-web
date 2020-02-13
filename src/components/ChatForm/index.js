@@ -38,7 +38,7 @@ function ChatForm({ websocket, messages, setMessages }) {
             />
         </div>
 
-        <button type="submit">Salvar</button>
+        <button type="submit">Send</button>
       </form>
     </div>
   );

@@ -1,10 +1,9 @@
 #app {
   margin: 0 auto;
-  padding: 60px 30px;
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  height: 100vh;
 }
 
 @media (max-width: 1000px) {

@@ -5,8 +5,8 @@ import './styles.css';
 function ChatMessages({ messages }) {
 
     return (
-        <div id='chat-messages'>
-            <ul>
+        <div id='messages-container'>
+            <ul id='chat-messages'>
                 {
                     messages.map(message => (
                         <p className="chat-message-item" key={Math.random()} >{message.message}</p>

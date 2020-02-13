@@ -1,0 +1,14 @@
+#chat-messages {
+    height: 100%;
+    overflow-y: scroll;
+    background-color: #efebf5;
+    padding-top: 5px;
+}
+
+#messages-container {
+    height: 70%;
+}
+
+.chat-message-item {
+    padding: 2.5px 10px 2.5px 10px;
+}
