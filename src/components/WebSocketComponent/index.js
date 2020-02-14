@@ -14,9 +14,8 @@ class WebSocketComponent extends Component {
     }
 
     // single websocket instance for the own application and constantly trying to reconnect.
-
     componentDidMount() {
-        this.connect();
+        //this.connect();
     }
 
     timeout = 250; // Initial timeout duration as a class variable
@@ -25,7 +24,7 @@ class WebSocketComponent extends Component {
      * @function connect
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
-    connect = () => {
+    connect = (userValue) => {
         var ws = new WebSocket("wss://pure-bastion-70060.herokuapp.com/");
         //var ws = new WebSocket("ws://localhost:3000");
         let that = this; // cache the this
@@ -36,9 +35,8 @@ class WebSocketComponent extends Component {
             console.log("connected websocket main component");
 
             var messageObject = JSON.stringify({
-                'message': 'User has joined chat ...',
+                'message': userValue +' has joined chat ...',
                 'id': Math.random(),
-                'user': 'Usuário teste',
             })
 
             ws.send(messageObject);
@@ -103,7 +101,7 @@ class WebSocketComponent extends Component {
     };
 
     render() {
-        return <ChatForm websocket={this.state.ws} messages={this.state.messages} setMessages={this.setMessages} />;
+        return <ChatForm websocket={this.state.ws} messages={this.state.messages} setMessages={this.setMessages} connect={this.connect} />;
     }
 }
 
