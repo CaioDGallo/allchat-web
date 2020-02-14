@@ -12,3 +12,9 @@
 .chat-message-item {
     padding: 2.5px 10px 2.5px 10px;
 }
+
+@media (max-width: 1000px) {
+    #chat-messages {
+        height: 66%;
+    }
+  }
