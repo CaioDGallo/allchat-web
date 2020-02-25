@@ -4,7 +4,7 @@ import './global.css';
 import './App.css';
 import './Main.css';
 
-import WebSocketComponent from './components/WebSocketComponent';
+import ChatRoom from './components/ChatRoom';
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
     <div id="app">
       <main>
         <strong>Chat</strong>
-        <WebSocketComponent />
+        <ChatRoom />
       </main>
     </div>
   );
