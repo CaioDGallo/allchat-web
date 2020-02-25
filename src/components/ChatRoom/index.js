@@ -19,7 +19,7 @@ class ChatRoom extends Component {
     }
 
     componentDidMount() {
-        var socket = socketIOClient("https://allchat-web.herokuapp.com")
+        var socket = socketIOClient("https://pure-bastion-70060.herokuapp.com")
         var instance = this;
 
         instance.setState({ 
