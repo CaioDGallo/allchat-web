@@ -5,14 +5,16 @@ import './App.css';
 import './Main.css';
 
 import ChatRoom from './components/ChatRoom';
+import ChatLobby from './components/ChatLobby';
 
 function App() {
 
   return (
     <div id="app">
       <main>
-        <strong>Chat</strong>
-        <ChatRoom />
+        {/* <strong>Chat</strong>
+        <ChatRoom /> */}
+        <ChatLobby />
       </main>
     </div>
   );
