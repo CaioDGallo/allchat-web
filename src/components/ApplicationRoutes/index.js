@@ -2,16 +2,22 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import ChatRoom from '../ChatRoom';
 import ChatLobby from '../ChatLobby';
+import Authentication from '../Authentication';
+
+import PrivateRoute from '../PrivateRoute';
 
 function ApplicationRoutes() {
     return (
         <BrowserRouter>
             <Route exact path="/">
+                <Authentication />
+            </ Route>
+            <PrivateRoute path="/lobby">
                 <ChatLobby />
-            </ Route>
-            <Route path="/chatroom">
+            </ PrivateRoute>
+            <PrivateRoute path="/chatroom">
                 <ChatRoom />
-            </ Route>
+            </ PrivateRoute>
         </ BrowserRouter>
     );
 }
