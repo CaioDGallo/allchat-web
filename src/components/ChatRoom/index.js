@@ -1,111 +1,102 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import ChatForm from '../ChatForm';
 import ChatMessages from '../ChatMessages';
 import socketIOClient from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './styles.css';
 
-class ChatRoom extends Component {
-    constructor(props) {
-        super(props);
+// class ChatRoom extends Component {
+//     constructor(props) {
+//         super(props);
 
-        this.sendMessage = this.sendMessage.bind(this)
+//         this.sendMessage = this.sendMessage.bind(this)
 
-        this.state = {
-            socket: null,
-            messages: [],
-        };
-    }
+//         useDispatch()({ type: 'START_SOCKET', address: "http://localhost:3000" })
 
-    componentDidMount() {
-        var socket = socketIOClient("https://pure-bastion-70060.herokuapp.com")
-        var instance = this;
+//         this.state = {
+//             socket: null,
+//             messages: [],
+//         };
+//     }
 
-        instance.setState({
-            socket: socket,
-            messages: [],
-        });
+//     componentDidMount() {
+//         //debug
+//         //var socket = socketIOClient("http://localhost:3000")
+//         //var socket = socketIOClient("https://pure-bastion-70060.herokuapp.com")
 
-        socket.on('user_connection', (data) => {
-            //console.log("connected websocket main component");
-            socket.emit('message', data);
-            instance.setMessages(data)
-        });
+//         var socket = useSelector(state => state.socket)
+//         var instance = this;
 
-        socket.on('message', (data) => {
-            console.log('onmsg ' + data.message)
+//         instance.setState({
+//             socket: socket,
+//             messages: [],
+//         });
 
-            instance.setMessages(data)
-        });
-    }
+//         socket.on('user_connection', (data) => {
+//             //console.log("connected websocket main component");
+//             socket.emit('message', data);
+//             instance.setMessages(data)
+//         });
 
-    setMessages(data) {
-        this.setState(state => ({
-            socket: this.state.socket,
-            messages: [...state.messages, data]
-        }))
-    }
+//         socket.on('message', (data) => {
+//             console.log('onmsg ' + data.message)
 
-    sendMessage(messageObject) {
-        this.setMessages(messageObject)
-        this.state.socket.emit('message', messageObject)
+//             instance.setMessages(data)
+//         });
+//     }
 
-        console.log('entered send message')
-    }
+//     setMessages(data) {
+//         this.setState(state => ({
+//             socket: this.state.socket,
+//             messages: [...state.messages, data]
+//         }))
+//     }
 
-    render() {
-        return <>
-            <main>
-                <div id='chat'>
-                    <ChatMessages messages={this.state.messages} />
-                    <ChatForm sendMessage={this.sendMessage} />
-                </div>
-            </main>
-        </>
-    }
-}
-
-export default ChatRoom;
-
-// function ChatRoom() {
-//     const [messages, setMessages] = useState([])
-//     const [socket, setSocket] = useState(null)
-
-//     useEffect(() => {
-//         async function setupWebSocket() {
-//             var socket = socketIOClient("https://pure-bastion-70060.herokuapp.com")
-
-//             setSocket(socket)
-
-//             socket.on('user_connection', (data) => {
-//                 //console.log("connected websocket main component");
-//                 socket.emit('message', data);
-//                 setMessages(data)
-//             });
-
-//             socket.on('message', (data) => {
-//                 console.log('onmsg ' + data.message)
-
-//                 setMessages(data)
-//             });
-//         }
-
-//         setupWebSocket()
-//     }, [])
-
-//     function sendMessage(messageObject) {
-//         setMessages([...messages, messageObject])
-//         socket.emit('message', messageObject)
+//     sendMessage(messageObject) {
+//         this.setMessages(messageObject)
+//         this.state.socket.emit('message', messageObject)
 
 //         console.log('entered send message')
 //     }
 
-//     return (
-//         <>
-//             <div id='chat'>
-//                 <ChatMessages messages={messages} />
-//                 <ChatForm sendMessage={sendMessage} />
-//             </div>
+//     render() {
+//         return <>
+//             <main>
+//                 <div id='chat'>
+//                     <ChatMessages messages={this.state.messages} />
+//                     <ChatForm sendMessage={this.sendMessage} />
+//                 </div>
+//             </main>
 //         </>
-//     );
+//     }
 // }
+
+// export default ChatRoom;
+
+function ChatRoom() {
+    const socket = useSelector(state => state.socket);
+
+    useEffect(() => {
+
+
+    }, [])
+
+    function sendMessage(messageObject) {
+        //setMessages([...messages, messageObject])
+        socket.emit('message', messageObject)
+
+        console.log('entered send message')
+    }
+
+    return (
+        <>
+            <div id='chat'>
+                <ChatMessages />
+                <ChatForm sendMessage={sendMessage} />
+            </div>
+        </>
+    );
+}
+
+export default ChatRoom;
