@@ -23,13 +23,13 @@ function ChatMessages() {
         socket.on('message', (data) => {
             console.log('onmsg ' + data)
 
-            setMessages(data)
+            setMessages([...messages, data])
         });
 
         socket.on('user_connection', (data) => {
             console.log("connected websocket main component" + data.content);
             socket.emit('message', data);
-            setMessages(data)
+            setMessages([...messages, data])
         });
 
     }, [])

@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import './styles.css';
 
-function ChatForm({ sendMessage }) {
+function ChatForm() {
   const [messageInputValue, setMessageInputValue] = useState('');
   const [userValue, setUserValue] = useState('');
+  const socket = useSelector(state => state.socket);
+
+  function sendMessage(messageObject) {
+    //setMessages([...messages, messageObject])
+    socket.emit('message', messageObject)
+
+    console.log('entered send message')
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     var messageObject = {
-      'message': userValue + ': ' + e.target.messageInputValue.value,
-      'id': Math.random(),
+      'sender_id': '123',
+      'receiver_id': '456',
+      'content': userValue + ': ' + e.target.messageInputValue.value,
     }
 
     sendMessage(messageObject)
