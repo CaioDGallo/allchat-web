@@ -16,8 +16,6 @@ function ChatMessages({ roomId }) {
                 { headers: { 'Authorization': `Bearer ${Cookies.get('auth')}` } }
             )
 
-            console.log('LOAD MESSAGES', roomId)
-
             dispatch({ type: 'LOAD_MESSAGES', messages: response.data })
         }
 
