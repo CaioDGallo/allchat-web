@@ -5,16 +5,18 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './styles.css';
 
-function ChatMessages() {
+function ChatMessages({ roomId }) {
     const socket = useSelector(state => state.socket);
     const messages = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function loadMessages() {
-            const response = await api.get(`/messages?sender_id=${123}&receiver_id=${456}`,
+            const response = await api.get(`/messages?room=${roomId}`,
                 { headers: { 'Authorization': `Bearer ${Cookies.get('auth')}` } }
             )
+
+            console.log('LOAD MESSAGES', roomId)
 
             dispatch({ type: 'LOAD_MESSAGES', messages: response.data })
         }

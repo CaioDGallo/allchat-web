@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+import api from '../../services/api';
 
 import './styles.css';
 
-function ChatForm() {
+function ChatForm({ roomId }) {
   const [messageInputValue, setMessageInputValue] = useState('');
   const [userValue, setUserValue] = useState('');
   const socket = useSelector(state => state.socket);
-  const currentRoomId = useSelector(state => state.currentRoomId);
+  const selectedUser = useSelector(state => state.selectedUser);
   const dispatch = useDispatch();
 
   function sendMessage(messageObject) {
     dispatch({ type: 'STORE_MESSAGE', messages: messageObject })
     //socket.emit('message', messageObject)
-    socket.emit('send_private_message', {
+    const msg = {
       "room": messageObject.room,
       "content": messageObject.content,
       "sender_id": messageObject.sender_id,
       "receiver_id": messageObject.receiver_id
-  });
+    }
+    socket.emit('send_private_message', msg);
+
+    saveMessageOnDatase(msg)
 
     console.log('entered send message --')
   }
@@ -27,14 +32,19 @@ function ChatForm() {
     e.preventDefault();
 
     var messageObject = {
-      'room': currentRoomId,
-      'sender_id': '123',
-      'receiver_id': '456',
+      'room': roomId,
+      'sender_id': Cookies.get('_id'),
+      'receiver_id': selectedUser._id,
       'content': userValue + ': ' + e.target.messageInputValue.value,
     }
 
     sendMessage(messageObject)
     setMessageInputValue('')
+  }
+
+  //Temporarily saving messsages one by one
+  async function saveMessageOnDatase(msg){
+    const response = await api.post('/messages', {messages: [msg]},{ headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` } })
   }
 
   return (

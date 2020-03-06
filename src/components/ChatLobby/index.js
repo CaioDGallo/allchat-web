@@ -15,9 +15,8 @@ function ChatLobby() {
     //Get Logged users to display below
     useEffect(() => {
         async function loadUsers() {
-            const response = await api.get('/user', { headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` } })
+            const response = await api.get('/user', { headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` }, params: {'_id':Cookies.get('_id')} })
 
-            console.log(response)
             setUsers(response.data)
         }
 
