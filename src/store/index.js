@@ -3,7 +3,9 @@ import socketIOClient from 'socket.io-client';
 
 const INITIAL_STATE = {
   socket: null,
-  messages: []
+  messages: [],
+  selectedUser: {},
+  currentRoomId: ''
 };
 
 function socketIO(state = INITIAL_STATE, action) {
@@ -14,6 +16,10 @@ function socketIO(state = INITIAL_STATE, action) {
       return { ...state, messages: action.messages };
     case 'STORE_MESSAGE':
       return { ...state, messages: [...state.messages, action.messages] };
+    case 'STORE_SELECTED_USER':
+      return { ...state, selectedUser: action.selectedUser };
+    case 'STORE_ROOM_ID':
+      return { ...state, currentRoomId: action.currentRoomId };
     default:
       return state;
   }

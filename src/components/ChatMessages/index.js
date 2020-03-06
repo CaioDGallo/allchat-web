@@ -21,16 +21,24 @@ function ChatMessages() {
 
         loadMessages()
 
-        socket.on('message', (data) => {
-            console.log('onmsg ' + data.content + 'messages: ' + messages)
-            dispatch({ type: 'STORE_MESSAGE', messages: data })
-        });
+        if (socket) {
 
-        socket.on('user_connection', (data) => {
-            console.log("connected websocket main component" + data.content);
-            socket.emit('message', data);
-            //dispatch({ type: 'STORE_MESSAGE', messages: data })
-        });
+            socket.on('private_message', function (data) {
+                console.log('onmsg PRIVATE ' + data.data + 'messages: ' + messages)
+                dispatch({ type: 'STORE_MESSAGE', messages: data })
+            });
+
+            // socket.on('message', (data) => {
+            //     console.log('onmsg ' + data.content + 'messages: ' + messages)
+            //     dispatch({ type: 'STORE_MESSAGE', messages: data })
+            // });
+
+            // socket.on('user_connection', (data) => {
+            //     console.log("connected websocket main component" + data.content);
+            //     socket.emit('message', data);
+            //     //dispatch({ type: 'STORE_MESSAGE', messages: data })
+            // });
+        }
 
     }, [])
 
