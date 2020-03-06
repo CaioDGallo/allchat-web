@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './styles.css';
 
@@ -7,9 +7,10 @@ function ChatForm() {
   const [messageInputValue, setMessageInputValue] = useState('');
   const [userValue, setUserValue] = useState('');
   const socket = useSelector(state => state.socket);
+  const dispatch = useDispatch();
 
   function sendMessage(messageObject) {
-    //setMessages([...messages, messageObject])
+    dispatch({ type: 'STORE_MESSAGE', messages: messageObject })
     socket.emit('message', messageObject)
 
     console.log('entered send message')

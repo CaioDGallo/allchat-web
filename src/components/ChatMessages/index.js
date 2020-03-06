@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Cookies from 'js-cookie';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './styles.css';
 
 function ChatMessages() {
     const socket = useSelector(state => state.socket);
-    const [messages, setMessages] = useState([])
+    const messages = useSelector(state => state.messages);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function loadMessages() {
@@ -15,21 +16,20 @@ function ChatMessages() {
                 { headers: { 'Authorization': `Bearer ${Cookies.get('auth')}` } }
             )
 
-            setMessages(response.data)
+            dispatch({ type: 'LOAD_MESSAGES', messages: response.data })
         }
 
         loadMessages()
 
         socket.on('message', (data) => {
-            console.log('onmsg ' + data)
-
-            setMessages([...messages, data])
+            console.log('onmsg ' + data.content + 'messages: ' + messages)
+            dispatch({ type: 'STORE_MESSAGE', messages: data })
         });
 
         socket.on('user_connection', (data) => {
             console.log("connected websocket main component" + data.content);
             socket.emit('message', data);
-            setMessages([...messages, data])
+            //dispatch({ type: 'STORE_MESSAGE', messages: data })
         });
 
     }, [])
