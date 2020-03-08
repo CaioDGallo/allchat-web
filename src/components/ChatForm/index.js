@@ -7,7 +7,6 @@ import './styles.css';
 
 function ChatForm({ roomId }) {
   const [messageInputValue, setMessageInputValue] = useState('');
-  const [userValue, setUserValue] = useState('');
   const socket = useSelector(state => state.socket);
   const selectedUser = useSelector(state => state.selectedUser);
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ function ChatForm({ roomId }) {
       'room': roomId,
       'sender_id': Cookies.get('_id'),
       'receiver_id': selectedUser._id,
-      'content': userValue + ': ' + e.target.messageInputValue.value,
+      'content':  Cookies.get('username') + ': ' + e.target.messageInputValue.value,
     }
 
     sendMessage(messageObject)
@@ -45,19 +44,12 @@ function ChatForm({ roomId }) {
   //Temporarily saving messsages one by one
   async function saveMessageOnDatase(msg){
     const response = await api.post('/messages', {messages: [msg]},{ headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` } })
+    console.log(response.data)
   }
 
   return (
     <form onSubmit={handleSubmit} id='chat-form'>
       <div className="input-block">
-        <label htmlFor="userValue">Username</label>
-        <input
-          name="userValue"
-          id="userValue"
-          required
-          value={userValue}
-          onChange={e => setUserValue(e.target.value)}
-        />
         <label htmlFor="messageInputValue">Message</label>
         <input
           name="messageInputValue"
