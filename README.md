@@ -8,6 +8,6 @@ Front-end repo: https://github.com/CaioDGallo/allchat-web
 
 Back-end repo: https://github.com/CaioDGallo/allchat
 
-# To configure the project to run locally change the WORKDIR (Dockerfile) path and "volumes" path (docker-compose.yml) to the directory of the repository on your machine.
+## To configure the project to run locally change the WORKDIR (Dockerfile) path and "volumes" path (docker-compose.yml) to the directory of the repository on your machine.
 
 
