@@ -21,7 +21,7 @@ function ChatLobby() {
         }
 
         //Start Websocket
-        dispatch({ type: 'START_SOCKET', address: "http://localhost:3000" })
+        dispatch({ type: 'START_SOCKET', address: "https://pure-bastion-70060.herokuapp.com" })
 
         loadUsers()
     }, [])
