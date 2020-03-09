@@ -2,28 +2,18 @@ import React from 'react';
 import { useHistory } from "react-router-dom";
 import Cookies from 'js-cookie';
 import api from '../../services/api';
-import { useEffect } from 'react';
 
 function Authentication() {
     let history = useHistory();
 
-    useEffect(() => {
-        //Temporary logs out everytime this component renders for test purposes
-        Cookies.remove('auth')
-        Cookies.remove('email')
-        Cookies.remove('_id')
-        Cookies.remove('username')
-        //--
-    }, [])
-
-    async function login(user){
+    async function login(user) {
 
         api.post('/session', {
             email: user.email,
             password: user.password
         })
             .then(function (response) {
-                console.log(response.data);
+                console.log(response.data, ' ', response.status);
                 if (response.status === 200 && response.data.token) {
                     Cookies.set('auth', response.data.token, { expires: 7 })
                     Cookies.set('email', response.data.user.email, { expires: 7 })
@@ -42,8 +32,8 @@ function Authentication() {
         e.preventDefault();
 
         login({
-            'email':e.target.email,
-            'password':e.target.password
+            'email': e.target.email.value,
+            'password': e.target.password.value
         })
     }
 

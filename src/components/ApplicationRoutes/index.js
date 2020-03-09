@@ -8,20 +8,22 @@ import Authentication from '../Authentication';
 import store from '../../store';
 
 import PrivateRoute from '../PrivateRoute';
+import ChatRoute from '../ChatRoute';
+import AuthenticationRoute from '../AuthenticationRoute';
 
 function ApplicationRoutes() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <Route exact path="/">
+                <AuthenticationRoute exact path="/">
                     <Authentication />
-                </ Route>
+                </ AuthenticationRoute>
                 <PrivateRoute path="/lobby">
                     <ChatLobby />
                 </ PrivateRoute>
-                <PrivateRoute path="/chatroom">
+                <ChatRoute path="/chatroom">
                     <ChatRoom />
-                </ PrivateRoute>
+                </ ChatRoute>
             </ BrowserRouter>
         </Provider>
     );
