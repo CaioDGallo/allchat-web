@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
+import Redis from 'redis';
 
 import UserItem from '../UserItem';
 import api from '../../services/api';
@@ -11,6 +12,7 @@ import '../../global.css';
 function ChatLobby() {
     const [users, setUsers] = useState([]);
     const dispatch = useDispatch();
+    const client = null;
 
     //Get Logged users to display below
     useEffect(() => {
@@ -20,15 +22,27 @@ function ChatLobby() {
             setUsers(response.data)
         }
 
+        client = Redis.createClient(6379);
+        client.setex('test', 3600, 'funcionou');
+
         //Start Websocket
-        dispatch({ type: 'START_SOCKET', address: "https://pure-bastion-70060.herokuapp.com" })
+        //dispatch({ type: 'START_SOCKET', address: "https://pure-bastion-70060.herokuapp.com" })
+        dispatch({ type: 'START_SOCKET', address: 'http://localhost:3000' })
 
         loadUsers()
     }, [])
 
     return (
         <main>
-            <div id='users-container'>
+            <div id='users-container' onClick={() => {
+                client.get('test', (err, data) => {
+                    if (err) throw err;
+                
+                    if (data !== null) {
+                      alert(data)
+                    }
+                  });
+            }}>
                 <ul id='users-list'>
                     {
                         users.map(user => (
