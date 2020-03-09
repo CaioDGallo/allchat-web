@@ -1,67 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatForm from '../ChatForm';
 import ChatMessages from '../ChatMessages';
-import socketIOClient from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+
+import * as util from '../../util/util';
 
 import './styles.css';
-import { Component } from 'react';
 
-class ChatRoom extends Component {
-    constructor(props) {
-        super(props);
+function ChatRoom() {
+    const socket = useSelector(state => state.socket);
+    const selectedUser = useSelector(state => state.selectedUser);
+    const dispatch = useDispatch();
+    const roomId = util.generateRoomId(selectedUser._id, Cookies.get('_id'))
 
-        this.sendMessage = this.sendMessage.bind(this)
+    useEffect(() => {
+        socket.emit('subscribe', roomId);// 1 = conversation_id
+    }, [])
 
-        this.state = {
-            socket: null,
-            messages: [],
-        };
-    }
-
-    componentDidMount() {
-        var socket = socketIOClient("https://pure-bastion-70060.herokuapp.com")
-        var instance = this;
-
-        instance.setState({ 
-            socket: socket,
-            messages: [], 
-        });
-
-        socket.on('user_connection', (data) => {
-            //console.log("connected websocket main component");
-            socket.emit('message', data);
-            instance.setMessages(data)
-        });
-
-        socket.on('message', (data) => {
-            console.log('onmsg ' + data.message)
-            
-            instance.setMessages(data)
-        });
-    }
-
-    setMessages(data){
-        this.setState(state => ({ 
-            socket: this.state.socket,
-            messages: [...state.messages, data] 
-        }))
-    }
-
-    sendMessage(messageObject) {
-        this.setMessages(messageObject)
-        this.state.socket.emit('message', messageObject)
-
-        console.log('entered send message')
-    }
-
-    render() {
-        return <>
+    return (
+        <>
             <div id='chat'>
-                <ChatMessages messages={this.state.messages} />
-                <ChatForm sendMessage={this.sendMessage} />
+                <ChatMessages roomId={roomId} />
+                <ChatForm roomId={roomId} />
             </div>
         </>
-    }
+    );
 }
 
 export default ChatRoom;
