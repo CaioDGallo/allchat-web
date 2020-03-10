@@ -18,7 +18,8 @@ function ChatForm({ roomId }) {
       "room": messageObject.room,
       "content": messageObject.content,
       "sender_id": messageObject.sender_id,
-      "receiver_id": messageObject.receiver_id
+      "receiver_id": messageObject.receiver_id,
+      "pending": true
     }
     socket.emit('send_private_message', msg);
 
@@ -35,6 +36,7 @@ function ChatForm({ roomId }) {
       'sender_id': Cookies.get('_id'),
       'receiver_id': selectedUser._id,
       'content':  Cookies.get('username') + ': ' + e.target.messageInputValue.value,
+      "pending": true
     }
 
     sendMessage(messageObject)
