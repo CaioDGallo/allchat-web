@@ -24,11 +24,11 @@ services:
     environment:
      - REDIS_REPLICATION_MODE=master
 
+# Maybe remove the configs below
     networks:
       node_net:
         ipv4_address: 172.28.1.4
 
-# networking for the Redis container
 networks:
   node_net:
     ipam:
