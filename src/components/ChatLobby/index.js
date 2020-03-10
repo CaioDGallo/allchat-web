@@ -15,7 +15,7 @@ function ChatLobby() {
     //Get Logged users to display below
     useEffect(() => {
         async function loadUsers() {
-            const response = await api.get('/user', { headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` }, params: {'_id':Cookies.get('_id')} })
+            const response = await api.get('/user', { headers: { 'Authorization': `Bearer ${Cookies.get('auth')}` }, params: { '_id': Cookies.get('_id') } })
 
             setUsers(response.data)
         }
@@ -26,8 +26,18 @@ function ChatLobby() {
         loadUsers()
     }, [])
 
+//temporary signout button
+    function signOut(){
+        Cookies.remove('auth')
+        Cookies.remove('_id')
+        Cookies.remove('username')
+        Cookies.remove('email')
+        window.location.reload();
+    }
+
     return (
         <main>
+            <button type="button" onClick={signOut}>Sign Out</button>
             <div id='users-container'>
                 <ul id='users-list'>
                     {
