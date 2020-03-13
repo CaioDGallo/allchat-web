@@ -23,8 +23,6 @@ function ChatForm({ roomId }) {
     }
     socket.emit('send_private_message', msg);
 
-    saveMessageOnDatase(msg)
-
     console.log('entered send message --')
   }
 
@@ -41,12 +39,6 @@ function ChatForm({ roomId }) {
 
     sendMessage(messageObject)
     setMessageInputValue('')
-  }
-
-  //Temporarily saving messsages one by one
-  async function saveMessageOnDatase(msg){
-    const response = await api.post('/messages', {messages: [msg]},{ headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` } })
-    console.log(response.data)
   }
 
   return (
