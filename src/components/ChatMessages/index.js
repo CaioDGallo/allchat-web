@@ -16,6 +16,10 @@ function ChatMessages({ roomId }) {
                 { headers: { 'Authorization': `Bearer ${Cookies.get('auth')}` } }
             )
 
+            // if(response.status == 200){
+            //     socket.emit('clear_pending_messages_for_this_user', {'user_id':Cookies.get('_id'), 'room': roomId})
+            // }
+
             dispatch({ type: 'LOAD_MESSAGES', messages: response.data })
         }
 
@@ -26,18 +30,12 @@ function ChatMessages({ roomId }) {
             socket.on('private_message', function (data) {
                 console.log('onmsg PRIVATE ' + data.data + 'messages: ' + messages)
                 dispatch({ type: 'STORE_MESSAGE', messages: data })
+                socket.emit('message_delivered', data)
             });
 
-            // socket.on('message', (data) => {
-            //     console.log('onmsg ' + data.content + 'messages: ' + messages)
-            //     dispatch({ type: 'STORE_MESSAGE', messages: data })
-            // });
-
-            // socket.on('user_connection', (data) => {
-            //     console.log("connected websocket main component" + data.content);
-            //     socket.emit('message', data);
-            //     //dispatch({ type: 'STORE_MESSAGE', messages: data })
-            // });
+            socket.on('delivered_confirmation', function (data) {
+                //Message was marked and confirmed as delivered, maybe notify this to the clients
+            });
         }
 
     }, [])
