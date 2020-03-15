@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import * as util from '../../util/util';
+import api from '../../services/api';
 
 import './styles.css';
 
@@ -13,18 +14,9 @@ function ChatForm({ roomId }) {
 
   function sendMessage(messageObject) {
     dispatch({ type: 'STORE_MESSAGE', messages: messageObject })
-    //socket.emit('message', messageObject)
-    const msg = {
-      "_id": messageObject._id,
-      "room": messageObject.room,
-      "content": messageObject.content,
-      "sender_id": messageObject.sender_id,
-      "receiver_id": messageObject.receiver_id,
-      "pending": true
-    }
-    socket.emit('send_private_message', msg);
+    socket.emit('send_private_message', messageObject);
 
-    console.log('entered send message -- ', msg)
+    saveMessageOnDatase(messageObject)
   }
 
   async function handleSubmit(e) {
@@ -42,6 +34,10 @@ function ChatForm({ roomId }) {
     sendMessage(messageObject)
     setMessageInputValue('')
   }
+
+    async function saveMessageOnDatase(msg){
+      const response = await api.post('/messages', {messages: [msg]},{ headers: { 'Authorization' : `Bearer ${Cookies.get('auth')}` } })
+    }
 
   return (
     <form onSubmit={handleSubmit} id='chat-form'>

@@ -13,7 +13,6 @@ function Authentication() {
             password: user.password
         })
             .then(function (response) {
-                console.log(response.data, ' ', response.status);
                 if (response.status === 200 && response.data.token) {
                     Cookies.set('auth', response.data.token, { expires: 7 })
                     Cookies.set('email', response.data.user.email, { expires: 7 })
@@ -46,7 +45,6 @@ function Authentication() {
             username: e.target.username.value
         })
             .then(function (response) {
-                console.log(response.data);
                 if (response.status === 200) {
                     login(response.data)
                 }

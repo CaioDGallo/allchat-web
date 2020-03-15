@@ -2,7 +2,6 @@ export function generateRoomId(id, id2){
     var i;
     var char;
 
-    console.log(id +' '+ id2)
     var hash = 0;
     if (id.length === 0) return hash;
     for (i = 0; i < id.length; i++) {
@@ -22,8 +21,6 @@ export function generateRoomId(id, id2){
     }
 
     id2 = hash;
-
-    console.log(id + ' ' + id2);
 
     //Always smaller first
     if(id > id2){

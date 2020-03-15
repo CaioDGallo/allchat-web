@@ -14,7 +14,7 @@ function ChatRoom() {
     const roomId = util.generateRoomId(selectedUser._id, Cookies.get('_id'))
 
     useEffect(() => {
-        socket.emit('subscribe', roomId);// 1 = conversation_id
+        socket.emit('subscribe', roomId);
     }, [])
 
     return (
