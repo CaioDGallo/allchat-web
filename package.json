@@ -22,7 +22,8 @@
     "start": "cross-env PORT=3333 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "stop": "taskkill -F -IM node.exe"
   },
   "eslintConfig": {
     "extends": "react-app"

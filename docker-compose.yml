@@ -7,4 +7,9 @@ services:
     ports:
       - "3333:3333"
     volumes:
-      - ".:/home/caiogallo/Documents/allchat-web"
+      # Linux dir
+      # - ".:/home/caiogallo/Documents/allchat-web"
+      # Mac dir
+      - ".:/Users/caiogallo/documents/allchat-web/allchat-web"
+
+      

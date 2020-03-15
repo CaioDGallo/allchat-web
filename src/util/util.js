@@ -27,8 +27,16 @@ export function generateRoomId(id, id2){
 
     //Always smaller first
     if(id > id2){
-        return id2 + id
+        const idNumbers = id2 + id
+        return 'r'+ idNumbers
     }else{
-        return id + id2
+        const idNumbers = id + id2
+        return 'r'+ idNumbers
     }
+}
+
+export function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
 }
